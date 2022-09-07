@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 
-const moviesSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   country: { // страна создания фильма
     type: String,
     requare: true,
@@ -63,4 +63,4 @@ const moviesSchema = new mongoose.Schema({
 
 });
 
-module.exports = mongoose.model('movie', moviesSchema);
+module.exports = mongoose.model('movie', userSchema);
