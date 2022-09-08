@@ -20,7 +20,7 @@ module.exports.createUser = (req, res, next) => {
       name, email, password: hash,
     }))
     // .then((({ _id }) => User.findById(_id)))
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.status(201).send({ name: user.name, email: user.email }))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Вы ввели некорректные данные'));
@@ -83,6 +83,8 @@ module.exports.updateUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         next(new BadRequest('Переданы некорректные данные'));
         return;
+      } if (err.code === 11000) {
+        next(new ConflictingRequest('Некорректные данные'));
       }
       next(err);
     });

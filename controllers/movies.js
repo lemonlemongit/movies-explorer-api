@@ -4,8 +4,11 @@ const NotFound = require('../errors/error404');
 const Forbidden = require('../errors/error403');
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find({ })
-    .then((film) => res.send(film))
+  const owner = req.user._id;
+  Movie.find({ owner })
+    .then((movies) => {
+      res.status(200).send(movies);
+    })
     .catch(next);
 };
 

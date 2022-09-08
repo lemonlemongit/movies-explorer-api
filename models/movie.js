@@ -4,41 +4,41 @@ const validator = require('validator');
 const userSchema = new mongoose.Schema({
   country: { // страна создания фильма
     type: String,
-    requare: true,
+    required: true,
   },
   director: { // режиссёр фильма
     type: String,
-    requare: true,
+    required: true,
   },
   duration: { // длительность фильма
     type: Number,
-    requare: true,
+    required: true,
   },
   year: { // год выпуска фильма
     type: String,
-    requare: true,
+    required: true,
   },
   description: { // описание фильма
     type: String,
-    requare: true,
+    required: true,
   },
   image: { // ссылка на постер к фильму URL-адрес
     type: String,
-    requare: true,
+    required: true,
     validate: {
       validator: (v) => validator.isURL(v),
     },
   },
   trailerLink: { // ссылка на трейлер фильма URL-адрес
     type: String,
-    requare: true,
+    required: true,
     validate: {
       validator: (v) => validator.isURL(v),
     },
   },
   thumbnail: { // миниатюрное изображение постера к фильму URL-адрес
     type: String,
-    requare: true,
+    required: true,
     validate: {
       validator: (v) => validator.isURL(v),
     },
@@ -54,11 +54,11 @@ const userSchema = new mongoose.Schema({
   },
   nameRU: { // название фильма на русском языке
     type: String,
-    requare: true,
+    required: true,
   },
   nameEN: { // название фильма на английском языке
     type: String,
-    requare: true,
+    required: true,
   },
 
 });

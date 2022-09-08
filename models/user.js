@@ -7,7 +7,7 @@ const Unauthorized = require('../errors/error401');
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    requare: true,
+    required: true,
     unique: true,
     validate: {
       validator: validator.isEmail,
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
   },
   name: {
     type: String,
-    requare: true,
+    required: true,
     minlength: 2,
     maxlength: 30,
   },
