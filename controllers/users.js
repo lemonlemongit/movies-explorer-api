@@ -43,9 +43,8 @@ module.exports.login = (req, res, next) => {
       res.send({ token });
     })
     .catch(() => {
-      throw new Unauthorized('Не удалось авторизоваться');
-    })
-    .catch(next);
+      next(new Unauthorized('Не удалось авторизоваться'));
+    });
 };
 
 module.exports.getUserInfo = (req, res, next) => {

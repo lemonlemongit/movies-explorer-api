@@ -10,7 +10,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const serverError = require('./middlewares/server-error');
 const { MONGO_DB } = require('./utils/config');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3003 } = process.env;
 const app = express();
 app.use(helmet());
 app.use(bodyParser.json());
