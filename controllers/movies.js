@@ -13,7 +13,6 @@ module.exports.getMovies = (req, res, next) => {
 };
 
 module.exports.createMovies = (req, res, next) => {
-  const owner = req.user._id;
   const {
     country,
     director,
@@ -22,10 +21,12 @@ module.exports.createMovies = (req, res, next) => {
     description,
     image,
     trailerLink,
-    nameRU, nameEN,
     thumbnail,
     movieId,
+    nameRU,
+    nameEN,
   } = req.body;
+  const owner = req.user._id;
 
   Movie.create({
     country,
@@ -35,11 +36,11 @@ module.exports.createMovies = (req, res, next) => {
     description,
     image,
     trailerLink,
+    thumbnail,
+    owner,
+    movieId,
     nameRU,
     nameEN,
-    thumbnail,
-    movieId,
-    owner,
   })
     .then((movie) => res.send(movie))
     .catch((err) => {
@@ -52,17 +53,28 @@ module.exports.createMovies = (req, res, next) => {
 };
 
 module.exports.deleteMovies = (req, res, next) => {
+  const owner = req.user._id;
   const { movieId } = req.params;
   Movie.findById(movieId)
-    .then((film) => {
-      if (!film) {
-        throw new NotFound('Не найдено.');
-      } if (film.owner.toString() !== req.user._id) {
-        throw new Forbidden('Можно удалять только cвои фильмы!');
+    .then((movie) => {
+      if (!movie) {
+        throw new NotFound({ message: 'Переданы некорректные данные.' });
       }
-      Movie.findByIdAndRemove(movieId)
-        .then(() => res.status(200).send({ message: 'Фильм удалён.' }))
-        .catch(next);
+      if (movie.owner.toString() !== owner) {
+        throw new Forbidden({ message: 'Переданы некорректные данные.' });
+      } else {
+        Movie.findByIdAndDelete(movieId)
+          .then((deletedMovie) => {
+            res.status(200).send(deletedMovie);
+          })
+          .catch((error) => {
+            if (error.name === 'CastError') {
+              throw new NotFound({ message: 'Переданы некорректные данные.' });
+            }
+            next(error);
+          })
+          .catch(next);
+      }
     })
     .catch(next);
 };

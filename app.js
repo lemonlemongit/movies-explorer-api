@@ -4,24 +4,32 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
 const helmet = require('helmet');
+const cors = require('cors');
 const limiter = require('./utils/rateLimit');
+
 const router = require('./routes/index');
+
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const serverError = require('./middlewares/server-error');
 const { MONGO_DB } = require('./utils/config');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3004 } = process.env;
 const app = express();
+
+app.use(cors());
 app.use(helmet());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(MONGO_DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+
 });
 
 app.use(requestLogger);
+
 app.use(limiter);
 app.use(router);
 

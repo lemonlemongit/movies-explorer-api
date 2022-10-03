@@ -53,7 +53,7 @@ module.exports.getUserInfo = (req, res, next) => {
       if (!user) {
         next(new NotFound('Не верный Пароль или Email')); // Такого пользователя нет
       } else {
-        res.send({ data: user });
+        res.send(user);
       }
     })
     .catch((error) => {
@@ -70,7 +70,7 @@ module.exports.updateUser = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, email },
-    { new: true, runValidators: true, upsert: false },
+    { new: true, runValidators: true },
   )
     .then((user) => {
       if (!user) {
